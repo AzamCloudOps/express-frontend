@@ -2,30 +2,23 @@ const express = require('express');
 const axios = require('axios');
 const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-// Middleware
+// Replace this with your current backend IP and port
+const API_URL = 'http://YOUR_PUBLIC_IP:5000';
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Environment variables
-const API_URL = process.env.API_URL || 'http://127.0.0.1:5000';
-
-// Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.post('/submit', async (req, res) => {
   const { name, email, message } = req.body;
-
   try {
-    const response = await axios.post(`${API_URL}/submit`, { 
-      name, 
-      email, 
-      message 
-    }, {
+    const response = await axios.post(`${API_URL}/submit`, { name, email, message }, {
       headers: { 'Content-Type': 'application/json' }
     });
 
@@ -57,6 +50,6 @@ app.post('/submit', async (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Frontend running on http://localhost:${PORT}`);
+  console.log(`✅ Frontend running on http://0.0.0.0:${PORT}`);
   console.log(`✅ Backend API at ${API_URL}`);
 });
